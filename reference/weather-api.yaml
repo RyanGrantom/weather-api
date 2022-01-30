@@ -4,7 +4,8 @@ info:
   version: '1.0'
   description: Grabs weather information for various specified cities
 servers:
-  - url: 'http://localhost:3000'
+  - url: stoplight.ngrok.io
+    description: Ngrok Server
 paths:
   /weather:
     get:
@@ -14,15 +15,68 @@ paths:
         '200':
           description: OK
         '401':
-          $ref: '#/components/responses/401'
+          description: Unauthorized
         '404':
           description: Not Found
       operationId: get-weather
       security:
-        - API Key - 1: []
+        - 24R0zNVDqUeW5PrNZv8dYCbsxF3_53hgRYpwhAHq1TEztMoh3: []
       parameters:
         - $ref: '#/components/parameters/limit'
       description: Returns a list of weather conditions in various cities
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Weather'
+    post:
+      summary: ''
+      operationId: add-city
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Weather'
+      description: Adds city to list of weather results
+  '/weather/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+    post:
+      summary: ''
+      operationId: post-weather-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      description: adds a city to the list to request weather for
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Weather'
+    put:
+      summary: ''
+      operationId: put-weather-id
+      responses:
+        '200':
+          description: OK
+      description: ''
+    delete:
+      summary: ''
+      operationId: delete-weather-id
+      responses:
+        '200':
+          description: OK
 components:
   schemas:
     Weather:
@@ -55,12 +109,15 @@ components:
           type: string
           format: date-time
           readOnly: true
-      description: data model for storing weather conditions in cities
+      required:
+        - city
+        - zipcode
   securitySchemes:
-    API Key - 1:
+    24R0zNVDqUeW5PrNZv8dYCbsxF3_53hgRYpwhAHq1TEztMoh3:
       name: API Key
       type: apiKey
       in: query
+      description: ''
   parameters:
     limit:
       name: limit
@@ -68,18 +125,5 @@ components:
       schema:
         type: string
       description: Return a list of results
-  responses:
-    '401':
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: ./Error.yaml
-    '404':
-      description: Example response
-      content:
-        application/json:
-          schema:
-            $ref: ./Error.yaml
 security:
   - API Key - 1: []
