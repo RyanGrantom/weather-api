@@ -1,0 +1,85 @@
+openapi: 3.1.0
+info:
+  title: weather-api
+  version: '1.0'
+  description: Grabs weather information for various specified cities
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /weather:
+    get:
+      summary: List Cities Weather
+      tags: []
+      responses:
+        '200':
+          description: OK
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          description: Not Found
+      operationId: get-weather
+      security:
+        - API Key - 1: []
+      parameters:
+        - $ref: '#/components/parameters/limit'
+      description: Returns a list of weather conditions in various cities
+components:
+  schemas:
+    Weather:
+      title: Weather
+      type: object
+      properties:
+        id:
+          type: number
+          readOnly: true
+        city:
+          type: string
+        zipcode:
+          type: number
+        weather:
+          type: string
+          readOnly: true
+        completed:
+          type: boolean
+          default: true
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        completed_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      description: data model for storing weather conditions in cities
+  securitySchemes:
+    API Key - 1:
+      name: API Key
+      type: apiKey
+      in: query
+  parameters:
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: string
+      description: Return a list of results
+  responses:
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ./Error.yaml
+    '404':
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: ./Error.yaml
+security:
+  - API Key - 1: []
