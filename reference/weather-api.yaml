@@ -68,18 +68,7 @@ paths:
                   completed_at: '2019-08-24T14:15:22Z'
                   updated_at: '2019-08-24T14:15:22Z'
         description: 'Request to add city with city, state, and zipcode'
-      parameters:
-        - $ref: '#/components/parameters/contentType'
-        - $ref: '#/components/parameters/city'
-        - schema:
-            type: string
-          in: query
-          name: state
-          description: State to add
-        - schema:
-            type: string
-          in: query
-          name: zipcode
+      parameters: []
     put:
       summary: Update City
       operationId: update-city
@@ -126,6 +115,11 @@ paths:
           $ref: '#/components/responses/404'
       operationId: get-weather-zipcode
       description: This gets the weather conditions for a single city based on zipcode
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Weather'
 components:
   schemas:
     Weather:
