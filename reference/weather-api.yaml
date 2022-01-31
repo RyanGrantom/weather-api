@@ -4,8 +4,7 @@ info:
   version: '1.0'
   description: Grabs weather information for various specified cities
 servers:
-  - url: stoplight.ngrok.io
-    description: Ngrok Server
+  - url: 'localhost:3000'
 paths:
   /weather:
     get:
@@ -13,14 +12,13 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
+          $ref: '#/components/responses/200'
         '401':
-          description: Unauthorized
+          $ref: '#/components/responses/401'
         '404':
-          description: Not Found
+          $ref: '#/components/responses/404'
       operationId: get-weather
-      security:
-        - 24R0zNVDqUeW5PrNZv8dYCbsxF3_53hgRYpwhAHq1TEztMoh3: []
+      security: []
       parameters:
         - $ref: '#/components/parameters/limit'
       description: Returns a list of weather conditions in various cities
@@ -29,6 +27,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Weather'
+        description: ''
     post:
       summary: ''
       operationId: add-city
@@ -112,12 +111,12 @@ components:
       required:
         - city
         - zipcode
+      description: model for weather requests in cities specifed by zipcode
   securitySchemes:
-    24R0zNVDqUeW5PrNZv8dYCbsxF3_53hgRYpwhAHq1TEztMoh3:
+    API Key - 1:
       name: API Key
       type: apiKey
       in: query
-      description: ''
   parameters:
     limit:
       name: limit
@@ -126,6 +125,12 @@ components:
         type: string
       description: Return a list of results
   responses:
+    '200':
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Weather'
     '401':
       description: Unauthorized
       content:
@@ -138,5 +143,22 @@ components:
         application/json:
           schema:
             $ref: ./Error-1.yaml
+  requestBodies:
+    City:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              city:
+                type: string
+              zipcode:
+                type: number
+              weather:
+                type: number
+                readOnly: true
+            required:
+              - city
+              - zipcode
 security:
   - API Key - 1: []
