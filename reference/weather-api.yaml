@@ -12,7 +12,8 @@ paths:
   /weather:
     get:
       summary: List Cities Weather
-      tags: []
+      tags:
+        - common
       responses:
         '200':
           description: OK
@@ -77,6 +78,8 @@ paths:
                   zipcode: 77389
         description: 'Request to add city with city, state, and zipcode'
       parameters: []
+      tags:
+        - common
     put:
       summary: Update City
       operationId: update-city
@@ -113,6 +116,8 @@ paths:
                 - city
                 - state
                 - zipcode
+      tags:
+        - common
     delete:
       summary: Delete City
       operationId: delete-city
@@ -136,12 +141,15 @@ paths:
                   type: integer
                 zipcode:
                   type: number
+      tags:
+        - common
   '/weather/{zipcode}':
     parameters:
       - $ref: '#/components/parameters/zipcode'
     get:
       summary: Get Single City Weather
-      tags: []
+      tags:
+        - common
       responses:
         '200':
           description: OK
@@ -271,3 +279,5 @@ components:
   requestBodies: {}
 security:
   - API Key - 1: []
+tags:
+  - name: common
