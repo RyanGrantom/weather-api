@@ -64,6 +64,20 @@ paths:
         description: 'Request to add city with city, state, and zipcode'
       parameters:
         - $ref: '#/components/parameters/contentType'
+        - schema:
+            type: string
+          in: query
+          name: city
+          description: City to Add
+        - schema:
+            type: string
+          in: query
+          name: state
+          description: State to add
+        - schema:
+            type: string
+          in: query
+          name: zipcode
     put:
       summary: Update City
       operationId: update-city
@@ -210,6 +224,13 @@ components:
         format: float
         example: 77389
       description: zipcode of city
+    city:
+      name: city
+      in: query
+      required: true
+      schema:
+        type: string
+      description: city request
   responses:
     '401':
       description: Unauthorized
