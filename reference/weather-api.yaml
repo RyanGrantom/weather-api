@@ -39,6 +39,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Weather'
+              examples: {}
           headers: {}
         '401':
           $ref: '#/components/responses/401'
@@ -53,20 +54,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Weather'
+              type: object
+              properties:
+                rank:
+                  type: integer
+                city:
+                  type: string
+                state:
+                  type: string
+                zipcode:
+                  type: number
+              required:
+                - city
+                - state
+                - zipcode
             examples:
               Request Example:
                 value:
                   rank: 0
                   city: string
+                  state: string
                   zipcode: 77389
-                  weather: Cloudy
-                  degrees: 95
-                  unit: fahrenheit
-                  completed: true
-                  created_at: '2019-08-24T14:15:22Z'
-                  completed_at: '2019-08-24T14:15:22Z'
-                  updated_at: '2019-08-24T14:15:22Z'
         description: 'Request to add city with city, state, and zipcode'
       parameters: []
     put:
@@ -75,12 +83,36 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Weather'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: ./Error.yaml
       description: Update City
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Weather'
+              type: object
+              properties:
+                rank:
+                  type: integer
+                city:
+                  type: string
+                state:
+                  type: string
+                zipcode:
+                  type: string
+              required:
+                - rank
+                - city
+                - state
+                - zipcode
     delete:
       summary: Delete City
       operationId: delete-city
@@ -91,12 +123,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Weather'
+        '404':
+          $ref: '#/components/responses/404'
       description: Remove city
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Weather'
+              type: object
+              properties:
+                rank:
+                  type: integer
+                zipcode:
+                  type: number
   '/weather/{zipcode}':
     parameters:
       - $ref: '#/components/parameters/zipcode'
@@ -137,9 +176,10 @@ components:
           created_at: '2019-08-24T14:15:22Z'
           completed_at: '2019-08-24T14:15:22Z'
           updated_at: '2019-08-24T14:15:22Z'
+      x-internal: false
       properties:
         rank:
-          type: number
+          type: integer
           readOnly: true
         city:
           type: string
@@ -189,9 +229,11 @@ components:
           format: date-time
           readOnly: true
       required:
+        - rank
+        - city
+        - state
         - zipcode
       readOnly: true
-      x-internal: false
   securitySchemes:
     '123123123':
       name: API Key
@@ -204,13 +246,6 @@ components:
       schema:
         type: string
       description: Return a list of results
-    contentType:
-      name: Content-Type
-      in: header
-      required: false
-      schema:
-        type: string
-      description: application/json
     zipcode:
       name: zipcode
       in: path
@@ -220,13 +255,6 @@ components:
         format: float
         example: 77389
       description: zipcode of city
-    city:
-      name: city
-      in: query
-      required: true
-      schema:
-        type: string
-      description: city request
   responses:
     '401':
       description: Unauthorized
