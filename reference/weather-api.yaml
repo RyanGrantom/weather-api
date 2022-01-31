@@ -42,6 +42,12 @@ paths:
           headers: {}
         '401':
           $ref: '#/components/responses/401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: ./Error.yaml
       description: Adds city to list of weather results
       requestBody:
         content:
