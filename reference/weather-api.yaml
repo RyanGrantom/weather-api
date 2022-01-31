@@ -64,11 +64,7 @@ paths:
         description: 'Request to add city with city, state, and zipcode'
       parameters:
         - $ref: '#/components/parameters/contentType'
-        - schema:
-            type: string
-          in: query
-          name: city
-          description: City to Add
+        - $ref: '#/components/parameters/city'
         - schema:
             type: string
           in: query
