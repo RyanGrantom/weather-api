@@ -75,42 +75,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Weather'
-  '/weather/{id}':
-    parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-    post:
-      summary: ''
-      operationId: post-weather-id
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: {}
-      description: adds a city to the list to request weather for
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Weather'
-    put:
-      summary: ''
-      operationId: put-weather-id
-      responses:
-        '200':
-          description: OK
-      description: ''
-    delete:
-      summary: ''
-      operationId: delete-weather-id
-      responses:
-        '200':
-          description: OK
 components:
   schemas:
     Weather:
