@@ -3,6 +3,9 @@ info:
   title: weather-api
   version: '1.0'
   description: Grabs weather information for various specified cities
+  contact:
+    name: Ryan
+    email: grantom.ryan@gmail.com
 servers:
   - url: 'http://localhost:3000'
 paths:
@@ -21,7 +24,7 @@ paths:
           $ref: '#/components/responses/401'
         '404':
           $ref: '#/components/responses/404'
-      operationId: get-weather
+      operationId: get-weather-all-cities
       security: []
       parameters:
         - $ref: '#/components/parameters/limit'
@@ -36,20 +39,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Weather'
+          headers: {}
         '401':
           $ref: '#/components/responses/401'
+      description: Adds city to list of weather results
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Weather'
-        description: ''
-      description: Adds city to list of weather results
-      security:
-        - API Key - 1: []
+            examples:
+              Request Example:
+                value:
+                  rank: 0
+                  city: string
+                  zipcode: 77389
+                  weather: Cloudy
+                  degrees: 95
+                  unit: fahrenheit
+                  completed: true
+                  created_at: '2019-08-24T14:15:22Z'
+                  completed_at: '2019-08-24T14:15:22Z'
+                  updated_at: '2019-08-24T14:15:22Z'
+        description: 'Request to add city with city, state, and zipcode'
+      parameters:
+        - $ref: '#/components/parameters/contentType'
     put:
       summary: Update City
-      operationId: put-weather
+      operationId: update-city
       responses:
         '200':
           description: OK
@@ -61,7 +78,7 @@ paths:
               $ref: '#/components/schemas/Weather'
     delete:
       summary: Delete City
-      operationId: delete-weather
+      operationId: delete-city
       responses:
         '200':
           description: OK
@@ -75,6 +92,24 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Weather'
+  '/weather/{zipcode}':
+    parameters:
+      - $ref: '#/components/parameters/zipcode'
+    get:
+      summary: Get Single City Weather
+      tags: []
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Weather'
+        '404':
+          $ref: '#/components/responses/404'
+      operationId: get-weather-zipcode
+      description: This gets the weather conditions for a single city based on zipcode
 components:
   schemas:
     Weather:
@@ -144,12 +179,11 @@ components:
           format: date-time
           readOnly: true
       required:
-        - city
-        - state
         - zipcode
       readOnly: true
+      x-internal: false
   securitySchemes:
-    API Key - 1:
+    '123123123':
       name: API Key
       type: apiKey
       in: query
@@ -160,6 +194,22 @@ components:
       schema:
         type: string
       description: Return a list of results
+    contentType:
+      name: Content-Type
+      in: header
+      required: false
+      schema:
+        type: string
+      description: application/json
+    zipcode:
+      name: zipcode
+      in: path
+      required: true
+      schema:
+        type: number
+        format: float
+        example: 77389
+      description: zipcode of city
   responses:
     '401':
       description: Unauthorized
