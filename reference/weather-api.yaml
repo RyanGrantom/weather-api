@@ -125,5 +125,18 @@ components:
       schema:
         type: string
       description: Return a list of results
+  responses:
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ./Error-1.yaml
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: ./Error-1.yaml
 security:
   - API Key - 1: []

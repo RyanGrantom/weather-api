@@ -1,0 +1,11 @@
+title: Error
+type: object
+x-tags:
+  - common
+properties:
+  id:
+    type: string
+  code:
+    type: string
+required:
+  - code
